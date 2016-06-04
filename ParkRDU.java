@@ -5,7 +5,6 @@
  */
 package parkrdu;
 
-import parkrdu.TestParameters.*;
 /**
  *
  * @author DavisT

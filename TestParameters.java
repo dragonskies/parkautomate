@@ -5,19 +5,47 @@
  */
 package parkrdu;
 
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Properties;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.AbstractButton;
+import java.util.Enumeration;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+
 /**
  *
  * @author DavisT
  */
 public class TestParameters extends javax.swing.JFrame {
+    
+    public Properties testdata;
 
     /**
      * Creates new form TestParameters
      */
     public TestParameters() {
         initComponents();
+        testdata = new Properties();
     }
-
+   
+    /**
+     * 
+     * @param testdata 
+     */
+    public TestParameters(Properties testdata){
+       initComponents(); 
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,59 +55,89 @@ public class TestParameters extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup2 = new javax.swing.ButtonGroup();
+        ccType_buttongrp = new javax.swing.ButtonGroup();
+        jDialog1 = new javax.swing.JDialog();
+        jFileChooser1 = new javax.swing.JFileChooser();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
-        jFormattedTextField2 = new javax.swing.JFormattedTextField();
+        zipCode_text = new javax.swing.JFormattedTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        emailAddress_text = new javax.swing.JTextField();
+        lastName_text = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        firstName_text = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jRadioButton4 = new javax.swing.JRadioButton();
+        ccName_text = new javax.swing.JTextField();
+        ccNumber_text = new javax.swing.JTextField();
+        visa_button = new javax.swing.JRadioButton();
+        mastercard_button = new javax.swing.JRadioButton();
+        discover_button = new javax.swing.JRadioButton();
+        amex_button = new javax.swing.JRadioButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
+        expireYear_text = new javax.swing.JTextField();
+        expireMonth_text = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        jFormattedTextField6 = new javax.swing.JFormattedTextField();
+        ccCSV_text = new javax.swing.JFormattedTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
-        jFormattedTextField3 = new javax.swing.JFormattedTextField();
-        jFormattedTextField4 = new javax.swing.JFormattedTextField();
-        jFormattedTextField5 = new javax.swing.JFormattedTextField();
+        entryDate_text = new javax.swing.JFormattedTextField();
+        entryTime_text = new javax.swing.JFormattedTextField();
+        exitDate_text = new javax.swing.JFormattedTextField();
+        exitTime_text = new javax.swing.JFormattedTextField();
         jPanel4 = new javax.swing.JPanel();
-        jSpinner1 = new javax.swing.JSpinner();
+        runsCount_spin = new javax.swing.JSpinner();
         jLabel11 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jSpinner2 = new javax.swing.JSpinner();
+        incDate_check = new javax.swing.JCheckBox();
+        incDateCount_spin = new javax.swing.JSpinner();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        browser_list = new javax.swing.JList<>();
         jLabel12 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel16 = new javax.swing.JLabel();
+        checkLinksTest_check = new javax.swing.JCheckBox();
+        createBooking_check = new javax.swing.JCheckBox();
+        createBookingAccount_check = new javax.swing.JCheckBox();
+        reminderAccount_check = new javax.swing.JCheckBox();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        file_menu = new javax.swing.JMenu();
+        saveParms_menuItem = new javax.swing.JMenuItem();
+        saveParmsAs = new javax.swing.JMenuItem();
+        loadParms_menuItem = new javax.swing.JMenuItem();
+        exit_menuItem = new javax.swing.JMenuItem();
+        edit_menu = new javax.swing.JMenu();
+        runTest_menu = new javax.swing.JMenu();
+        execute_menuItem = new javax.swing.JMenuItem();
+
+        jDialog1.setIconImage(null);
+        jDialog1.setModal(true);
+        jDialog1.setName("confirm exit"); // NOI18N
+        jDialog1.setResizable(false);
+        jDialog1.setType(java.awt.Window.Type.POPUP);
+
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("ParkRDU");
 
         try {
-            jFormattedTextField2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####")));
+            zipCode_text.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
@@ -88,15 +146,15 @@ public class TestParameters extends javax.swing.JFrame {
 
         jLabel3.setText("Email address");
 
-        jTextField3.setText("jTextField3");
+        emailAddress_text.setText("some@email.com");
 
-        jTextField2.setText("jTextField2");
+        lastName_text.setText("Test");
 
         jLabel2.setText("Last Name");
 
         jLabel1.setText("First Name");
 
-        jTextField1.setText("jTextField1");
+        firstName_text.setText("Tester");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -111,10 +169,10 @@ public class TestParameters extends javax.swing.JFrame {
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField1)
-                    .addComponent(jTextField2)
-                    .addComponent(jTextField3)
-                    .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(firstName_text)
+                    .addComponent(lastName_text)
+                    .addComponent(emailAddress_text)
+                    .addComponent(zipCode_text, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(168, 168, 168))
         );
         jPanel1Layout.setVerticalGroup(
@@ -122,48 +180,48 @@ public class TestParameters extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(firstName_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lastName_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(9, 9, 9)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(emailAddress_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(zipCode_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(98, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Basic Info", jPanel1);
 
-        jTextField4.setText("jTextField4");
+        ccName_text.setText("Tester test");
 
-        jTextField5.setText("jTextField5");
+        ccNumber_text.setText("4444333322221111");
 
-        buttonGroup2.add(jRadioButton1);
-        jRadioButton1.setText("Visa");
+        ccType_buttongrp.add(visa_button);
+        visa_button.setText("Visa");
 
-        buttonGroup2.add(jRadioButton2);
-        jRadioButton2.setText("Mastercard");
+        ccType_buttongrp.add(mastercard_button);
+        mastercard_button.setText("Mastercard");
 
-        buttonGroup2.add(jRadioButton3);
-        jRadioButton3.setText("Discover");
+        ccType_buttongrp.add(discover_button);
+        discover_button.setText("Discover");
 
-        buttonGroup2.add(jRadioButton4);
-        jRadioButton4.setText("American Express");
+        ccType_buttongrp.add(amex_button);
+        amex_button.setText("American Express");
 
         jLabel5.setText("Name");
 
         jLabel6.setText("Number");
 
-        jTextField6.setText("Year");
+        expireYear_text.setText("Year");
 
-        jTextField7.setText("Month");
+        expireMonth_text.setText("Month");
 
         jLabel7.setText("Expiration");
 
@@ -171,42 +229,44 @@ public class TestParameters extends javax.swing.JFrame {
 
         jLabel15.setText("CSV number");
 
-        jFormattedTextField6.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        ccCSV_text.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        ccCSV_text.setText("123");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(86, Short.MAX_VALUE)
+                .addContainerGap(151, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jRadioButton4)
-                            .addComponent(jRadioButton3)
-                            .addComponent(jRadioButton2)
-                            .addComponent(jRadioButton1)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(amex_button)
+                            .addComponent(discover_button)
+                            .addComponent(mastercard_button)
+                            .addComponent(visa_button)
+                            .addComponent(ccName_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(92, 92, 92))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(ccNumber_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel15)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jFormattedTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(ccCSV_text, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(expireMonth_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(expireYear_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -214,26 +274,26 @@ public class TestParameters extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ccName_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ccNumber_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
                     .addComponent(jLabel15)
-                    .addComponent(jFormattedTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ccCSV_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jRadioButton1)
+                .addComponent(visa_button)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jRadioButton2)
+                .addComponent(mastercard_button)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jRadioButton3)
+                .addComponent(discover_button)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jRadioButton4)
+                .addComponent(amex_button)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(expireYear_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(expireMonth_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
                     .addComponent(jLabel8))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -249,13 +309,18 @@ public class TestParameters extends javax.swing.JFrame {
 
         jLabel14.setText("Entry Time");
 
-        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+        entryDate_text.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM))));
+        entryDate_text.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                entryDate_textActionPerformed(evt);
+            }
+        });
 
-        jFormattedTextField3.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getTimeInstance(java.text.DateFormat.SHORT))));
+        entryTime_text.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getTimeInstance(java.text.DateFormat.SHORT))));
 
-        jFormattedTextField4.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+        exitDate_text.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.LONG))));
 
-        jFormattedTextField5.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getTimeInstance(java.text.DateFormat.SHORT))));
+        exitTime_text.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getTimeInstance(java.text.DateFormat.SHORT))));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -268,16 +333,18 @@ public class TestParameters extends javax.swing.JFrame {
                     .addComponent(jLabel14))
                 .addGap(3, 3, 3)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jFormattedTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(entryTime_text, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel13))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(entryDate_text, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel9)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jFormattedTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jFormattedTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(exitTime_text, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(exitDate_text, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(154, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -287,14 +354,14 @@ public class TestParameters extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(jLabel9)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jFormattedTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(entryDate_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(exitDate_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
                     .addComponent(jLabel14)
-                    .addComponent(jFormattedTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jFormattedTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(entryTime_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(exitTime_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(138, Short.MAX_VALUE))
         );
 
@@ -302,18 +369,61 @@ public class TestParameters extends javax.swing.JFrame {
 
         jLabel11.setText("No. of runs");
 
-        jCheckBox1.setText("Increment date");
+        incDate_check.setText("Increment date");
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        incDateCount_spin.setModel(new javax.swing.SpinnerNumberModel(1, null, 10, 1));
+
+        browser_list.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Firefox", "Chrome", "Internet Explorer 11", "Opera", "Edge" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jList1.setSelectedIndex(0);
-        jScrollPane1.setViewportView(jList1);
+        browser_list.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        browser_list.setSelectedIndex(0);
+        jScrollPane1.setViewportView(browser_list);
 
         jLabel12.setText("Select a browser");
+
+        jLabel16.setText("Tests to run");
+
+        checkLinksTest_check.setText("Check links");
+
+        createBooking_check.setSelected(true);
+        createBooking_check.setText("Create booking");
+
+        createBookingAccount_check.setText("Create booking w/account");
+
+        reminderAccount_check.setText("Send reminder");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(reminderAccount_check)
+                    .addComponent(createBookingAccount_check)
+                    .addComponent(createBooking_check)
+                    .addComponent(checkLinksTest_check)
+                    .addComponent(jLabel16))
+                .addContainerGap(120, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(checkLinksTest_check)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(createBooking_check)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(createBookingAccount_check)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(reminderAccount_check)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -322,48 +432,109 @@ public class TestParameters extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel12)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(runsCount_spin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jCheckBox1)
+                        .addComponent(incDate_check)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(88, Short.MAX_VALUE))
+                        .addComponent(incDateCount_spin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel12)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(runsCount_spin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11)
-                    .addComponent(jCheckBox1)
-                    .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(incDate_check)
+                    .addComponent(incDateCount_spin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(64, 64, 64))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(64, 64, 64))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
 
         jTabbedPane1.addTab("Test cond.", jPanel4);
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
+        file_menu.setText("File");
+        file_menu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                file_menuMenuSelected(evt);
+            }
+        });
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        saveParms_menuItem.setText("Save parameters");
+        saveParms_menuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveParms_menuItemActionPerformed(evt);
+            }
+        });
+        file_menu.add(saveParms_menuItem);
 
-        jMenu3.setText("Run test");
+        saveParmsAs.setText("Save as...");
+        saveParmsAs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveParmsAsActionPerformed(evt);
+            }
+        });
+        file_menu.add(saveParmsAs);
 
-        jMenuItem1.setText("Execute");
-        jMenu3.add(jMenuItem1);
+        loadParms_menuItem.setText("Load Test Parameters");
+        loadParms_menuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadParms_menuItemActionPerformed(evt);
+            }
+        });
+        file_menu.add(loadParms_menuItem);
 
-        jMenuBar1.add(jMenu3);
+        exit_menuItem.setText("Exit");
+        exit_menuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exit_menuItemActionPerformed(evt);
+            }
+        });
+        file_menu.add(exit_menuItem);
+
+        jMenuBar1.add(file_menu);
+
+        edit_menu.setText("Edit");
+        jMenuBar1.add(edit_menu);
+
+        runTest_menu.setText("Run test");
+        runTest_menu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                runTest_menuActionPerformed(evt);
+            }
+        });
+
+        execute_menuItem.setText("Execute");
+        execute_menuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                execute_menuItemActionPerformed(evt);
+            }
+        });
+        runTest_menu.add(execute_menuItem);
+
+        jMenuBar1.add(runTest_menu);
 
         setJMenuBar(jMenuBar1);
 
@@ -373,7 +544,7 @@ public class TestParameters extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jTabbedPane1)
-                .addGap(0, 22, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -386,6 +557,170 @@ public class TestParameters extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void loadParms_menuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadParms_menuItemActionPerformed
+        // TODO add your handling code here:
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Test data","td");
+        jFileChooser1.setFileFilter(filter);
+        int returnVal = jFileChooser1.showOpenDialog(rootPane);
+        if (returnVal ==JFileChooser.APPROVE_OPTION){
+            try {
+            // TODO add your handling code here:
+            // save test data
+            FileInputStream in = new FileInputStream(jFileChooser1.getSelectedFile());
+            testdata.load(in);
+            in.close();
+            
+            } catch (IOException ex) {
+                Logger.getLogger(TestParameters.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            update_gui();
+        }
+    }//GEN-LAST:event_loadParms_menuItemActionPerformed
+
+    private void update_gui() {
+    // update the gui with loaded test data
+    ccCSV_text.setText(testdata.getProperty("ccCSV"));
+    ccName_text.setText(testdata.getProperty("ccName"));
+    ccNumber_text.setText(testdata.getProperty("ccNumber"));
+    emailAddress_text.setText(testdata.getProperty("email"));
+    entryDate_text.setText(testdata.getProperty("entrydate"));
+    exitDate_text.setText(testdata.getProperty("exitdate"));
+    entryTime_text.setText(testdata.getProperty("entrytime"));
+    exitTime_text.setText(testdata.getProperty("exittime"));
+    expireYear_text.setText(testdata.getProperty("ccyear"));
+    expireMonth_text.setText(testdata.getProperty("ccmonth"));
+    firstName_text.setText(testdata.getProperty("firstname"));
+    lastName_text.setText(testdata.getProperty("lastname"));
+    zipCode_text.setText(testdata.getProperty("zipcode"));
+    
+    incDateCount_spin.setValue(Integer.parseInt(testdata.getProperty("incdatevalue")));
+    runsCount_spin.setValue(Integer.parseInt(testdata.getProperty("runscount")));
+    }
+    
+    private void file_menuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_file_menuMenuSelected
+        // TODO add your handling code here:
+    }//GEN-LAST:event_file_menuMenuSelected
+
+    private void exit_menuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exit_menuItemActionPerformed
+        // TODO add your handling code here:
+        //show alert about not saving
+        int returnVal = JOptionPane.showConfirmDialog(rootPane, "Exit application\n Unsaved data will be lost");
+        if (returnVal == JOptionPane.OK_OPTION){
+            System.exit(0);
+        };
+        
+    }//GEN-LAST:event_exit_menuItemActionPerformed
+
+    private void entryDate_textActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entryDate_textActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_entryDate_textActionPerformed
+
+    private void runTest_menuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runTest_menuActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_runTest_menuActionPerformed
+
+    private void saveParms_menuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveParms_menuItemActionPerformed
+        try {
+            // TODO add your handling code here:
+            // save test data
+            FileOutputStream out = new FileOutputStream("ParkRDU.td");
+            update_testdata();
+            testdata.store(out, "Park RDU save test data");
+            out.close();
+        } catch (IOException ex) {
+            Logger.getLogger(TestParameters.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+
+        
+    }//GEN-LAST:event_saveParms_menuItemActionPerformed
+
+    private void execute_menuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_execute_menuItemActionPerformed
+        // TODO add your handling code here:
+        update_testdata();
+        if (checkLinksTest_check.isSelected()){
+            CheckLinks linkTest = new CheckLinks(testdata);
+            try{
+                linkTest.setUp();
+                linkTest.testCheckLinks();
+            }catch (Exception ex){
+                Logger.getLogger(TestParameters.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (createBooking_check.isSelected()){
+            Book bookTest = new Book(testdata);
+        //System.console().writer().println("starting booking test");
+
+            try{
+                bookTest.setUp();
+                bookTest.testBook();
+            } catch (Exception ex) {
+                Logger.getLogger(TestParameters.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }//GEN-LAST:event_execute_menuItemActionPerformed
+    }
+    
+    private void saveParmsAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveParmsAsActionPerformed
+        String comments;
+        update_testdata();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Test data","td");
+        jFileChooser1.setFileFilter(filter);
+        int returnVal = jFileChooser1.showOpenDialog(rootPane);
+        if (returnVal ==JFileChooser.APPROVE_OPTION){
+            try {
+            // TODO add your handling code here:
+            // save test data
+            // ask for a comment
+            comments=JOptionPane.showInputDialog("Type a comment");
+            FileOutputStream out = new FileOutputStream(jFileChooser1.getSelectedFile());
+            testdata.store(out, comments);
+            out.close();
+            } catch (IOException ex) {
+                Logger.getLogger(TestParameters.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+    }//GEN-LAST:event_saveParmsAsActionPerformed
+
+    public String get_entryDate_text(){
+        return entryDate_text.getText();
+    };
+    
+    public void update_testdata(){
+        testdata.put("ccCSV", ccCSV_text.getText());
+        testdata.put("ccName", ccName_text.getText());
+        testdata.put("ccNumber", ccNumber_text.getText());
+        //testdata.setProperty("ccType", cctype);
+        testdata.put("email", emailAddress_text.getText());
+        testdata.put("entrydate",entryDate_text.getText());
+        testdata.put("exitdate",exitDate_text.getText());
+        testdata.put("entrytime",entryTime_text.getText());
+        testdata.put("exittime", exitTime_text.getText());
+        testdata.put("ccyear",expireYear_text.getText());
+        testdata.put("ccmonth",expireMonth_text.getText());
+        testdata.put("firstname", firstName_text.getText());
+        testdata.put("lastname", lastName_text.getText());
+        testdata.put("zipcode", zipCode_text.getText());
+        testdata.put("runscount", runsCount_spin.getValue().toString());
+        
+        //testdata.setProperty("incdatevalue", incDate_check.isSelected());
+        if (incDate_check.isSelected()){
+            testdata.put("incdatevalue",incDateCount_spin.getValue().toString());
+        }else{
+            testdata.put("incdatevalue","1");
+        }
+        
+        //check which credit card type
+        //cctyperadio = ccType_buttongrp.getElements();
+        for(Enumeration<AbstractButton> cctypebuttons = ccType_buttongrp.getElements(); cctypebuttons.hasMoreElements();){
+            AbstractButton cctype = cctypebuttons.nextElement();
+            if (cctype.isSelected()){
+                testdata.put("cctype",cctype.getText());
+                
+            }
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -422,14 +757,32 @@ public class TestParameters extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup buttonGroup2;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JFormattedTextField jFormattedTextField2;
-    private javax.swing.JFormattedTextField jFormattedTextField3;
-    private javax.swing.JFormattedTextField jFormattedTextField4;
-    private javax.swing.JFormattedTextField jFormattedTextField5;
-    private javax.swing.JFormattedTextField jFormattedTextField6;
+    private javax.swing.JRadioButton amex_button;
+    private javax.swing.JList<String> browser_list;
+    private javax.swing.JFormattedTextField ccCSV_text;
+    private javax.swing.JTextField ccName_text;
+    private javax.swing.JTextField ccNumber_text;
+    private javax.swing.ButtonGroup ccType_buttongrp;
+    private javax.swing.JCheckBox checkLinksTest_check;
+    private javax.swing.JCheckBox createBookingAccount_check;
+    private javax.swing.JCheckBox createBooking_check;
+    private javax.swing.JRadioButton discover_button;
+    private javax.swing.JMenu edit_menu;
+    private javax.swing.JTextField emailAddress_text;
+    private javax.swing.JFormattedTextField entryDate_text;
+    private javax.swing.JFormattedTextField entryTime_text;
+    private javax.swing.JMenuItem execute_menuItem;
+    private javax.swing.JFormattedTextField exitDate_text;
+    private javax.swing.JFormattedTextField exitTime_text;
+    private javax.swing.JMenuItem exit_menuItem;
+    private javax.swing.JTextField expireMonth_text;
+    private javax.swing.JTextField expireYear_text;
+    private javax.swing.JMenu file_menu;
+    private javax.swing.JTextField firstName_text;
+    private javax.swing.JSpinner incDateCount_spin;
+    private javax.swing.JCheckBox incDate_check;
+    private javax.swing.JDialog jDialog1;
+    private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -437,6 +790,7 @@ public class TestParameters extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -445,30 +799,24 @@ public class TestParameters extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JRadioButton jRadioButton4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
+    private javax.swing.JTextField lastName_text;
+    private javax.swing.JMenuItem loadParms_menuItem;
+    private javax.swing.JRadioButton mastercard_button;
+    private javax.swing.JCheckBox reminderAccount_check;
+    private javax.swing.JMenu runTest_menu;
+    private javax.swing.JSpinner runsCount_spin;
+    private javax.swing.JMenuItem saveParmsAs;
+    private javax.swing.JMenuItem saveParms_menuItem;
+    private javax.swing.JRadioButton visa_button;
+    private javax.swing.JFormattedTextField zipCode_text;
     // End of variables declaration//GEN-END:variables
+
 }
