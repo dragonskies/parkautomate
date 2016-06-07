@@ -10,7 +10,7 @@ package parkrdu;
  * @author DavisT
  */
 public class ParkRDU {
-    
+
     /**
      * @param args the command line arguments
      */

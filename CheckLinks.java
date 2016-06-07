@@ -2,18 +2,23 @@ package parkrdu;
 
 import java.io.File;
 import java.util.Properties;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.concurrent.TimeUnit;
-import org.junit.*;
-import static org.junit.Assert.*;
 //import static org.hamcrest.CoreMatchers.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.support.ui.Select;
+import org.apache.commons.io.*;
 
 public class CheckLinks {
-  private FirefoxDriver driver;
+  private WebDriver driver;
   private String baseUrl;
   private boolean acceptNextAlert = true;
   private StringBuffer verificationErrors = new StringBuffer();
@@ -28,8 +33,10 @@ public class CheckLinks {
   private String lastName;
   private String emailAddress;
   private String ccCSV;
+  private String screenshotName = "screenshot";
+  private Integer screenshotNumber = 0;
   
-  public CheckLinks(Properties testdata){
+  public CheckLinks(Properties testdata, String browser){
       entrydate = testdata.getProperty("entrydate");
       exitdate = testdata.getProperty("exitdate");
       ccName = testdata.getProperty("ccName");
@@ -39,41 +46,82 @@ public class CheckLinks {
       lastName = testdata.getProperty("lastname");
       emailAddress = testdata.getProperty("email");
       ccMonth = testdata.getProperty("ccmonth");
-  }
-  @Before
-  public void setUp() throws Exception {
-    driver = new FirefoxDriver();
+      if (browser == "Firefox"){
+          driver = new FirefoxDriver();
+      } else if (browser == "Internet Explorer 11"){
+          //System.setProperty("", "baseUrl");
+          driver = new InternetExplorerDriver();
+      } else if (browser == "Chrome"){
+          System.setProperty("webdriver.chrome.driver", "C:\\Users\\davist\\Downloads\\chromedriver_win32(2)\\chromedriver.exe");
+          driver = new ChromeDriver();
+      } else if (browser == "Safari"){
+          driver = new SafariDriver();
+      } else if (browser == "Edge"){
+          System.setProperty("webdriver.edge.driver", "C:\\Users\\davist\\Downloads\\MicrosoftWebDriver.exe");
+          driver = new EdgeDriver();
+      } else if (browser == "Opera"){
+          driver = new OperaDriver();
+      }
     baseUrl = "https://rdu-booking.preprod.inventiveit.net/";
     driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+    driver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS );
   }
 
-  @Test
   public void testCheckLinks() throws Exception {
+
     driver.get(baseUrl + "/en/");
-    driver.findElement(By.xpath("//a[@class='header-logo']/img")).click();
-    driver.findElement(By.xpath("//nav[@class='header-bottom']//a[.='Frequently Asked Questions']")).click();
-    driver.getScreenshotAs(OutputType.FILE);
+    String parentWindow = driver.getWindowHandle();
+    driver.findElement(By.cssSelector("header-logo")).click();
+    driver.findElement(By.xpath("html/body/main/nav/div/div[1]/div/ul/li[1]/a")).click();
+    File screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+    screenshotNumber += 1;
+    FileUtils.copyFile(screenshot, new File(screenshotName+screenshotNumber.toString()+".png"));
     driver.findElement(By.xpath("//nav[@class='header-bottom']//a[.='Parking Information']")).click();
-    driver.getScreenshotAs(OutputType.FILE);
+    screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+    screenshotNumber += 1;
+    FileUtils.copyFile(screenshot, new File(screenshotName+screenshotNumber.toString()+".png"));
     driver.findElement(By.xpath("//nav[@class='header-bottom']//a[.='Manage My Booking']")).click();
-    driver.getScreenshotAs(OutputType.FILE);
+    screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+    screenshotNumber += 1;
+    FileUtils.copyFile(screenshot, new File(screenshotName+screenshotNumber.toString()+".png"));
     driver.findElement(By.xpath("//nav[@class='header-bottom']//a[.='Login']")).click();
-    driver.getScreenshotAs(OutputType.FILE);
+    screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+    screenshotNumber += 1;
+    FileUtils.copyFile(screenshot, new File(screenshotName+screenshotNumber.toString()+".png"));
     driver.findElement(By.xpath("//nav[@class='header-bottom']//a[.='Create Account']")).click();
-    driver.getScreenshotAs(OutputType.FILE);
+    screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+    screenshotNumber += 1;
+    FileUtils.copyFile(screenshot, new File(screenshotName+screenshotNumber.toString()+".png"));
     driver.findElement(By.linkText("TERMS & CONDITIONS")).click();
-    driver.getScreenshotAs(OutputType.FILE);
-    driver.findElement(By.linkText("PRIVACY POLICY")).click();
-    driver.getScreenshotAs(OutputType.FILE);
-    driver.findElement(By.linkText("CONTACT US")).click();
-    driver.getScreenshotAs(OutputType.FILE);
-    driver.findElement(By.xpath("(//a[contains(text(),'Frequently Asked Questions')])[2]")).click();
-    driver.getScreenshotAs(OutputType.FILE);
+    Set<String> handles = driver.getWindowHandles();
+    	for (String windowHandle : handles){
+    		if(!windowHandle.equals(parentWindow)){
+    			driver.switchTo().window(windowHandle);
+    			screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+    		    screenshotNumber += 1;
+    		    FileUtils.copyFile(screenshot, new File(screenshotName+screenshotNumber.toString()+".png"));
+    		    driver.findElement(By.linkText("PRIVACY POLICY")).click();
+    		    //driver.switchTo().window("Privacy Policy | RDU International Airport");
+    		    screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+    		    screenshotNumber += 1;
+    		    FileUtils.copyFile(screenshot, new File(screenshotName+screenshotNumber.toString()+".png"));
+    		    driver.findElement(By.linkText("CONTACT US")).click();
+    		    //driver.switchTo().window("Contact us | RDU International Airport");
+    		    screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+    		    screenshotNumber += 1;
+    		    FileUtils.copyFile(screenshot, new File(screenshotName+screenshotNumber.toString()+".png"));
+    		    driver.findElement(By.xpath("(//a[contains(text(),'Frequently Asked Questions')])[2]")).click();
+    		    //driver.switchTo().window("Frequently Asked Questions | RDU International Airport");
+    		    screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+    		    screenshotNumber += 1;
+    		    FileUtils.copyFile(screenshot, new File(screenshotName+screenshotNumber.toString()+".png"));
+    		}
+    	}
     // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | null | ]]
   }
 
-  @After
-  public void tearDown() throws Exception {
+
+/*  public void tearDown() throws Exception {
     driver.quit();
     String verificationErrorString = verificationErrors.toString();
     if (!"".equals(verificationErrorString)) {
@@ -89,7 +137,7 @@ public class CheckLinks {
       return false;
     }
   }
-
+*/
   private boolean isAlertPresent() {
     try {
       driver.switchTo().alert();
