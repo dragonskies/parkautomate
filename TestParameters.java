@@ -659,8 +659,8 @@ public class TestParameters extends javax.swing.JFrame {
     emailAddress_text.setText(testdata.getProperty("email"));
     entryDate_text.setText(testdata.getProperty("entrydate"));
     exitDate_text.setText(testdata.getProperty("exitdate"));
-    entryTime_text.setText(testdata.getProperty("entrytime"));
-    exitTime_text.setText(testdata.getProperty("exittime"));
+    //entryTime_text.setText(testdata.getProperty("entrytime"));
+    //exitTime_text.setText(testdata.getProperty("exittime"));
     expireYear_text.setText(testdata.getProperty("ccyear"));
     expireMonth_text.setText(testdata.getProperty("ccmonth"));
     firstName_text.setText(testdata.getProperty("firstname"));
@@ -670,6 +670,21 @@ public class TestParameters extends javax.swing.JFrame {
     incDateCount_spin.setValue(Integer.parseInt(testdata.getProperty("incdatevalue")));
     runsCount_spin.setValue(Integer.parseInt(testdata.getProperty("runscount")));
     screenshotName_text.setText(screenshotName);
+    
+	String entryTime;
+	String exitTime;
+	
+	SimpleDateFormat time24hour = new SimpleDateFormat("HH:mm"); 
+	try {
+		
+		entryTime = time24hour.parse(testdata.getProperty("entrytime")).toString();
+		exitTime = time24hour.parse(testdata.getProperty("exittime")).toString();
+		entryTime_text.setText(entryTime);
+		exitTime_text.setText(exitTime);
+	} catch (ParseException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
     
     }
     
@@ -812,7 +827,7 @@ public class TestParameters extends javax.swing.JFrame {
         testdata.put("ccmonth",expireMonth_text.getText());
         testdata.put("firstname", firstName_text.getText());
         testdata.put("lastname", lastName_text.getText());
-        testdata.put("zipcode", zipCode_text.getText());
+        testdata.put("zipcode", zipCode_text.getText().toString());
         testdata.put("runscount", runsCount_spin.getValue().toString());
         testdata.put("screenshotname", screenshotName_text.getText());
         testdata.put("screenshotdir", screenshotDir);

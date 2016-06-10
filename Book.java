@@ -12,6 +12,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.MarionetteDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -70,11 +71,15 @@ public class Book {
       ccMonth = testdata.getProperty("ccmonth");
       screenshotName = testdata.getProperty("screenshotname");
       screenshotDir = testdata.getProperty("screenshotdir")+"\\";
+      zipCode = testdata.getProperty("zipcode");
+
       
       if (browser == "Firefox"){
-          driver = new FirefoxDriver();
+    	  URL url = this.getClass().getClassLoader().getResource("wires.exe");
+    	  System.setProperty("webdriver.gecko.driver", url.getPath());   	  
+          driver = new MarionetteDriver();
           browserName = browser;
-          waitTimes = 20000; //Firefox needs longer to load to avoid blank screenshots
+          waitTimes = 500; //Firefox needs longer to load to avoid blank screenshots
       } else if (browser == "Internet Explorer 11"){
     	  DesiredCapabilities ieCapabilities = DesiredCapabilities.internetExplorer(); 
     	  ieCapabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
@@ -134,6 +139,47 @@ public class Book {
       accountName = accName;
       accountPassword = accPassword;
       baseUrl = "https://rdu-booking.preprod.inventiveit.net/";
+      if (browser == "Firefox"){
+    	  //URL url = this.getClass().getClassLoader().getResource("wires.exe");
+    	  //System.setProperty("webdriver.gecko.driver", url.getPath());   	  
+          driver = new FirefoxDriver();
+          browserName = browser;
+          waitTimes = 500; //Firefox needs longer to load to avoid blank screenshots
+      } else if (browser == "Internet Explorer 11"){
+    	  DesiredCapabilities ieCapabilities = DesiredCapabilities.internetExplorer(); 
+    	  ieCapabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+    	  ieCapabilities.setCapability(InternetExplorerDriver.INITIAL_BROWSER_URL, "https://rdu-booking.preprod.inventiveit.net/en/");
+          driver = new InternetExplorerDriver(ieCapabilities);
+          browserName = browser;
+          waitTimes = 400; //allow a little longer for IE to load
+          try {
+			Thread.sleep(waitTimes);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+      } else if (browser == "Chrome"){
+    	  URL url = this.getClass().getClassLoader().getResource("chromedriver.exe");
+    	  System.setProperty("webdriver.chrome.driver", url.getPath());
+          driver = new ChromeDriver();
+          browserName = browser;
+      } else if (browser == "Edge"){
+    	  URL url = this.getClass().getClassLoader().getResource("MicrosoftWebDriver.exe");
+          System.setProperty("webdriver.edge.driver", url.getPath());
+          driver = new EdgeDriver();
+          browserName = browser;
+          waitTimes = 300;
+      } else if (browser == "Opera"){
+    	  /*
+    	   * Not sure if this is needed
+    	   * 
+    	  URL url = this.getClass().getClassLoader().getResource("OperaDriver.exe");
+    	  System.setProperty("webdriver.opera.driver", url.getPath());
+          */
+          driver = new OperaDriver();
+          browserName = browser;
+      }
+    baseUrl = "https://rdu-booking.preprod.inventiveit.net/";
       driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
       driver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS );
   }
@@ -145,6 +191,8 @@ public class Book {
     screenshotNumber += 1;
     FileUtils.copyFile(screenshot, new File(screenshotDir+screenshotName+screenshotNumber.toString()+".png"));
     Thread.sleep(waitTimes);
+    driver.get("https://rdu-booking.preprod.inventiveit.net/en/");    // this is mainly for the experimental Marionette driver
+
     /*
      * This block is only for testing account related activity
      */
@@ -160,15 +208,44 @@ public class Book {
     driver.findElement(By.id("entry-date")).click();
     driver.findElement(By.id("entry-date")).clear();
     driver.findElement(By.id("entry-date")).sendKeys(entrydate);
-    driver.findElement(By.id("entry-time")).click();
-    driver.findElement(By.id("entry-time")).sendKeys(entrytime);
     driver.findElement(By.id("exit-date")).click();
     driver.findElement(By.id("exit-date")).clear();
     driver.findElement(By.id("exit-date")).sendKeys(exitdate);
+/*   
+ * Until I can figure out how to do the time selection
+ *  
+    driver.findElement(By.id("entry-time")).click();
+    driver.findElement(By.id("entry-time")).sendKeys(entrytime);
     driver.findElement(By.id("exit-time")).click();
     driver.findElement(By.id("exit-time")).sendKeys(exittime);
+    
+*/    Thread.sleep(waitTimes);
+    screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+    screenshotNumber += 1;
+    FileUtils.copyFile(screenshot, new File(screenshotDir+screenshotName+screenshotNumber.toString()+".png"));
+    driver.findElement(By.className("searchform-submit-btn")).click();
     Thread.sleep(waitTimes);
     screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+    screenshotNumber += 1;
+    FileUtils.copyFile(screenshot, new File(screenshotDir+screenshotName+screenshotNumber.toString()+".png"));
+    
+    /**
+     * Find the first search result
+     */
+/*    WebElement premierLocation = driver.findElement(By.id("search-result-1"));
+    //premierLocation.findElement(By.className("search-result-select-btn")).click();
+    WebElement premierSelect = premierLocation.findElement(By.className("search-result-select")).findElement(By.name("Parking[ProductId]"));
+    premierSelect.click();*/
+    driver.findElement(By.id("search-result-1")).findElement(By.name("Parking[ProductId]")).click();
+    //driver.findElement(By.xpath(".//*[@id='search-result-1']/div[1]/div[6]/form/button")).click();
+    
+    Thread.sleep(waitTimes);
+
+    /*
+     * This block is probably a duplicate
+     * 
+    screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+   screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
     screenshotNumber += 1;
     FileUtils.copyFile(screenshot, new File(screenshotDir+screenshotName+screenshotNumber.toString()+".png"));
     driver.findElement(By.xpath("//button[@type='submit']")).click();
@@ -176,39 +253,20 @@ public class Book {
     screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
     screenshotNumber += 1;
     FileUtils.copyFile(screenshot, new File(screenshotDir+screenshotName+screenshotNumber.toString()+".png"));
-    driver.findElement(By.xpath(".//*[@id='search-result-3']/div[1]/div[6]/form/button")).click();
-    Thread.sleep(waitTimes);
-    screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-    screenshotNumber += 1;
-    FileUtils.copyFile(screenshot, new File(screenshotDir+screenshotName+screenshotNumber.toString()+".png"));
-    driver.findElement(By.linkText("Proceed to Checkout")).click();
-    Thread.sleep(waitTimes);
-    screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-    screenshotNumber += 1;
-    FileUtils.copyFile(screenshot, new File(screenshotDir+screenshotName+screenshotNumber.toString()+".png"));
-    driver.findElement(By.id("checkbox-terms_and_condition")).click();
-    Thread.sleep(waitTimes);
-    screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-    screenshotNumber += 1;
-    FileUtils.copyFile(screenshot, new File(screenshotDir+screenshotName+screenshotNumber.toString()+".png"));
-    driver.findElement(By.xpath("//main[@id='panel']/section[2]/div/div/form/div[10]/div[11]/div/div/div")).click();
-    Thread.sleep(waitTimes);
-    screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-    screenshotNumber += 1;
-    FileUtils.copyFile(screenshot, new File(screenshotDir+screenshotName+screenshotNumber.toString()+".png"));
-    driver.findElement(By.xpath("//button[@type='submit']")).click();
-    Thread.sleep(waitTimes);
-    screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-    screenshotNumber += 1;
-    FileUtils.copyFile(screenshot, new File(screenshotDir+screenshotName+screenshotNumber.toString()+".png"));
+    */
     driver.findElement(By.id("input-first_name")).sendKeys(firstName);
     driver.findElement(By.id("input-last_name")).sendKeys(lastName);
     driver.findElement(By.id("input-email")).sendKeys(emailAddress);
     driver.findElement(By.id("input-confirm_email")).sendKeys(emailAddress);    
     driver.findElement(By.id("input-postcode")).clear();
     driver.findElement(By.id("input-postcode")).sendKeys(zipCode);
-    driver.findElement(By.xpath("//main[@id='panel']/section[2]/div/div/form/div[10]/div[11]/div/div/div")).click();
-    driver.findElement(By.xpath("//button[@type='submit']")).click();
+    screenshotNumber += 1;
+    FileUtils.copyFile(screenshot, new File(screenshotDir+screenshotName+screenshotNumber.toString()+".png"));
+    driver.findElement(By.id("checkbox-terms_and_condition")).click();
+    
+    //driver.findElement(By.xpath("//main[@id='panel']/section[2]/div/div/form/div[10]/div[11]/div/div/div")).click();
+    
+    driver.findElement(By.linkText("Proceed to Checkout")).click();
     Thread.sleep(waitTimes);
     screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
     screenshotNumber += 1;
