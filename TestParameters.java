@@ -10,13 +10,19 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.AbstractButton;
+
+import java.util.Date;
 import java.util.Enumeration;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -30,6 +36,8 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.JFormattedTextField;
 
 
 /**
@@ -39,6 +47,9 @@ import java.awt.event.ActionEvent;
 public class TestParameters extends javax.swing.JFrame {
     
     public Properties testdata;
+    public String screenshotName = "screenshot"; // screenshot filename
+    public String screenshotDir = ""; // screenshot directory
+
 
     /**
      * Creates new form TestParameters
@@ -105,6 +116,7 @@ public class TestParameters extends javax.swing.JFrame {
         exitTime_text = new javax.swing.JFormattedTextField();
         jPanel4 = new javax.swing.JPanel();
         runsCount_spin = new javax.swing.JSpinner();
+        runsCount_spin.setModel(new SpinnerNumberModel(new Integer(1), null, null, new Integer(1)));
         jLabel11 = new javax.swing.JLabel();
         incDate_check = new javax.swing.JCheckBox();
         incDateCount_spin = new javax.swing.JSpinner();
@@ -113,6 +125,7 @@ public class TestParameters extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         checkLinksTest_check = new javax.swing.JCheckBox();
+        checkLinksTest_check.setSelected(true);
         createBooking_check = new javax.swing.JCheckBox();
         createBookingAccount_check = new javax.swing.JCheckBox();
         reminderAccount_check = new javax.swing.JCheckBox();
@@ -168,8 +181,8 @@ public class TestParameters extends javax.swing.JFrame {
         
         JLabel lblNewLabel = new JLabel("Password");
         
-        textField = new JTextField();
-        textField.setColumns(10);
+        password_text = new JTextField();
+        password_text.setColumns(10);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1Layout.setHorizontalGroup(
@@ -192,7 +205,7 @@ public class TestParameters extends javax.swing.JFrame {
         						.addGroup(jPanel1Layout.createSequentialGroup()
         							.addGroup(jPanel1Layout.createParallelGroup(Alignment.TRAILING, false)
         								.addComponent(lastName_text, Alignment.LEADING)
-        								.addComponent(textField, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        								.addComponent(password_text, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         								.addComponent(zipCode_text, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE)
         								.addComponent(emailAddress_text, Alignment.LEADING, 190, 190, Short.MAX_VALUE))
         							.addGap(168))))
@@ -218,7 +231,7 @@ public class TestParameters extends javax.swing.JFrame {
         			.addGap(7)
         			.addGroup(jPanel1Layout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(lblNewLabel)
-        				.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        				.addComponent(password_text, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         			.addPreferredGap(ComponentPlacement.UNRELATED)
         			.addGroup(jPanel1Layout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(jLabel4)
@@ -346,54 +359,54 @@ public class TestParameters extends javax.swing.JFrame {
             }
         });
 
-        entryTime_text.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getTimeInstance(java.text.DateFormat.SHORT))));
 
-        exitDate_text.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.LONG))));
+        entryTime_text.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getTimeInstance(java.text.SimpleDateFormat.SHORT))));
+        exitDate_text.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM))));
 
         exitTime_text.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getTimeInstance(java.text.DateFormat.SHORT))));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel14))
-                .addGap(3, 3, 3)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(entryTime_text, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel13))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(entryDate_text, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel9)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(exitTime_text, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(exitDate_text, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(154, Short.MAX_VALUE))
+        	jPanel3Layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(jPanel3Layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(jLabel10)
+        				.addComponent(jLabel14))
+        			.addGap(3)
+        			.addGroup(jPanel3Layout.createParallelGroup(Alignment.TRAILING)
+        				.addGroup(jPanel3Layout.createSequentialGroup()
+        					.addComponent(entryTime_text, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(jLabel13))
+        				.addGroup(jPanel3Layout.createSequentialGroup()
+        					.addComponent(entryDate_text, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(jLabel9)))
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING, false)
+        				.addComponent(exitTime_text)
+        				.addComponent(exitDate_text, GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE))
+        			.addContainerGap(343, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel9)
-                    .addComponent(entryDate_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(exitDate_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel13)
-                    .addComponent(jLabel14)
-                    .addComponent(entryTime_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(exitTime_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(138, Short.MAX_VALUE))
+        	jPanel3Layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(jPanel3Layout.createSequentialGroup()
+        			.addGap(31)
+        			.addGroup(jPanel3Layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(jLabel10)
+        				.addComponent(jLabel9)
+        				.addComponent(entryDate_text, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(exitDate_text, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addGroup(jPanel3Layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(jLabel13)
+        				.addComponent(jLabel14)
+        				.addComponent(entryTime_text, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(exitTime_text, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        			.addContainerGap(189, Short.MAX_VALUE))
         );
+        jPanel3.setLayout(jPanel3Layout);
 
         jTabbedPane1.addTab("Dates", jPanel3);
 
@@ -408,8 +421,6 @@ public class TestParameters extends javax.swing.JFrame {
         jLabel16.setText("Tests to run");
 
         checkLinksTest_check.setText("Check links");
-
-        createBooking_check.setSelected(true);
         createBooking_check.setText("Create booking");
 
         createBookingAccount_check.setText("Create booking w/account");
@@ -454,6 +465,11 @@ public class TestParameters extends javax.swing.JFrame {
                 });
                 browser_list.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
                 browser_list.setSelectedIndex(0);
+        
+        JLabel lblScreenshotName = new JLabel("Screenshot name");
+        
+        screenshotName_text = new JTextField();
+        screenshotName_text.setColumns(10);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4Layout.setHorizontalGroup(
@@ -462,41 +478,52 @@ public class TestParameters extends javax.swing.JFrame {
         			.addContainerGap()
         			.addComponent(jPanel5, GroupLayout.PREFERRED_SIZE, 187, GroupLayout.PREFERRED_SIZE)
         			.addGroup(jPanel4Layout.createParallelGroup(Alignment.LEADING)
-        				.addGroup(jPanel4Layout.createParallelGroup(Alignment.LEADING)
-        					.addGroup(jPanel4Layout.createSequentialGroup()
-        						.addGap(8)
-        						.addComponent(jLabel12)
-        						.addGap(172)
-        						.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-        					.addGroup(jPanel4Layout.createSequentialGroup()
-        						.addComponent(jLabel11)
-        						.addPreferredGap(ComponentPlacement.UNRELATED)
-        						.addComponent(runsCount_spin, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        						.addGap(18)
-        						.addComponent(incDate_check)
-        						.addPreferredGap(ComponentPlacement.RELATED)
-        						.addComponent(incDateCount_spin, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-        				.addComponent(browser_list, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(jPanel4Layout.createSequentialGroup()
+        					.addGap(8)
+        					.addComponent(jLabel12)
+        					.addGap(172)
+        					.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        				.addComponent(browser_list, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
+        				.addGroup(jPanel4Layout.createSequentialGroup()
+        					.addGroup(jPanel4Layout.createParallelGroup(Alignment.LEADING)
+        						.addGroup(jPanel4Layout.createSequentialGroup()
+        							.addComponent(jLabel11)
+        							.addPreferredGap(ComponentPlacement.UNRELATED)
+        							.addComponent(runsCount_spin, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        						.addGroup(jPanel4Layout.createSequentialGroup()
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(lblScreenshotName)))
+        					.addGap(18)
+        					.addGroup(jPanel4Layout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(screenshotName_text, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        						.addGroup(jPanel4Layout.createSequentialGroup()
+        							.addComponent(incDate_check)
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(incDateCount_spin, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))))
         			.addContainerGap(168, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
-        	jPanel4Layout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+        	jPanel4Layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(jPanel4Layout.createSequentialGroup()
         			.addContainerGap()
         			.addGroup(jPanel4Layout.createParallelGroup(Alignment.TRAILING)
-        				.addComponent(jPanel5, GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
+        				.addComponent(jPanel5, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
         				.addGroup(jPanel4Layout.createSequentialGroup()
         					.addGroup(jPanel4Layout.createParallelGroup(Alignment.BASELINE)
         						.addComponent(runsCount_spin, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         						.addComponent(jLabel11)
         						.addComponent(incDate_check)
         						.addComponent(incDateCount_spin, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-        					.addPreferredGap(ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
-        					.addGroup(jPanel4Layout.createParallelGroup(Alignment.LEADING)
-        						.addGroup(Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addGroup(jPanel4Layout.createParallelGroup(Alignment.BASELINE)
+        						.addComponent(lblScreenshotName)
+        						.addComponent(screenshotName_text, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        					.addPreferredGap(ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+        					.addGroup(jPanel4Layout.createParallelGroup(Alignment.TRAILING)
+        						.addGroup(jPanel4Layout.createSequentialGroup()
         							.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
         							.addGap(53))
-        						.addGroup(Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+        						.addGroup(jPanel4Layout.createSequentialGroup()
         							.addComponent(jLabel12)
         							.addPreferredGap(ComponentPlacement.RELATED)
         							.addComponent(browser_list, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
@@ -568,6 +595,16 @@ public class TestParameters extends javax.swing.JFrame {
                 execute_menuItemActionPerformed(evt);
             }
         });
+        
+        ScreenshotLocation_menu = new JMenuItem("Screenshot location");
+        ScreenshotLocation_menu.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent evt) {
+        		ScreenshotLocation_menuItemActionPerformed(evt);
+        	}
+
+
+        });
+        runTest_menu.add(ScreenshotLocation_menu);
         runTest_menu.add(execute_menuItem);
 
         jMenuBar1.add(runTest_menu);
@@ -597,6 +634,7 @@ public class TestParameters extends javax.swing.JFrame {
         // TODO add your handling code here:
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Test data","td");
         jFileChooser1.setFileFilter(filter);
+        jFileChooser1.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         int returnVal = jFileChooser1.showOpenDialog(rootPane);
         if (returnVal ==JFileChooser.APPROVE_OPTION){
             try {
@@ -631,6 +669,8 @@ public class TestParameters extends javax.swing.JFrame {
     
     incDateCount_spin.setValue(Integer.parseInt(testdata.getProperty("incdatevalue")));
     runsCount_spin.setValue(Integer.parseInt(testdata.getProperty("runscount")));
+    screenshotName_text.setText(screenshotName);
+    
     }
     
     private void file_menuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_file_menuMenuSelected
@@ -674,45 +714,57 @@ public class TestParameters extends javax.swing.JFrame {
 
     private void execute_menuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_execute_menuItemActionPerformed
         // TODO add your handling code here:
+    	Integer loops = Integer.parseInt(runsCount_spin.getValue().toString());
         update_testdata();
         
-        if (checkLinksTest_check.isSelected()){
-            CheckLinks linkTest = new CheckLinks(testdata, browser_list.getSelectedValue());
-            try{
-                //linkTest.setUp(browser_list.getSelectedValue());
-                linkTest.testCheckLinks();
-            }catch (Exception ex){
-                Logger.getLogger(TestParameters.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        if (createBooking_check.isSelected()){
-            Book bookTest = new Book(testdata, browser_list.getSelectedValue());
-        //System.console().writer().println("starting booking test");
-
-            try{
-                bookTest.setUp();
-                bookTest.testBook();
-            } catch (Exception ex) {
-                Logger.getLogger(TestParameters.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        if (createBookingAccount_check.isSelected()){
-            Book bookTest = new Book(testdata, emailAddress_text.getText(), "parkrdu", browser_list.getSelectedValue());
-            try {
-                bookTest.setUp();
-                bookTest.testBook();
-            } catch (Exception ex){
-                Logger.getLogger(TestParameters.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        while (loops > 0){
+	        if (checkLinksTest_check.isSelected()){
+	            CheckLinks linkTest = new CheckLinks(testdata, browser_list.getSelectedValue());
+	            try{
+	                //linkTest.setUp(browser_list.getSelectedValue());
+	                linkTest.testCheckLinks();
+	            }catch (Exception ex){
+	                Logger.getLogger(TestParameters.class.getName()).log(Level.SEVERE, null, ex);
+	            }
+	        }
+	        if (createBooking_check.isSelected()){
+	            Book bookTest = new Book(testdata, browser_list.getSelectedValue());
+	        //System.console().writer().println("starting booking test");
+	
+	            try{
+	                bookTest.testBook();
+	            } catch (Exception ex) {
+	                Logger.getLogger(TestParameters.class.getName()).log(Level.SEVERE, null, ex);
+	            }
+	        }
+	        if (createBookingAccount_check.isSelected()){
+	            Book bookTest = new Book(testdata, emailAddress_text.getText(), password_text.getText() , browser_list.getSelectedValue());
+	            try {
+	                bookTest.testBook();
+	            } catch (Exception ex){
+	                Logger.getLogger(TestParameters.class.getName()).log(Level.SEVERE, null, ex);
+	            }
+	        }
+	        loops--;
         }
     }//GEN-LAST:event_execute_menuItemActionPerformed
 
-    
+	private void ScreenshotLocation_menuItemActionPerformed(ActionEvent evt) {
+		// TODO Auto-generated method stub
+		jFileChooser1.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int returnVal = jFileChooser1.showOpenDialog(rootPane);
+        if (returnVal ==JFileChooser.APPROVE_OPTION){
+        	//screenshotName = jFileChooser1.getSelectedFile().getName();
+        	screenshotDir = jFileChooser1.getSelectedFile().getPath();
+        }
+        update_testdata();
+	}    
     private void saveParmsAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveParmsAsActionPerformed
         String comments;
         update_testdata();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Test data","td");
         jFileChooser1.setFileFilter(filter);
+        jFileChooser1.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         int returnVal = jFileChooser1.showOpenDialog(rootPane);
         if (returnVal ==JFileChooser.APPROVE_OPTION){
             try {
@@ -735,6 +787,20 @@ public class TestParameters extends javax.swing.JFrame {
     };
     
     public void update_testdata(){
+    	String entryTime;
+    	String exitTime;
+    	
+    	SimpleDateFormat time24hour = new SimpleDateFormat("HH:mm"); 
+    	try {
+			entryTime = time24hour.parse(entryTime_text.getText()).toString();
+			testdata.put("entrytime", entryTime);
+			exitTime = time24hour.parse(exitTime_text.getText()).toString();
+			testdata.put("exittime", exitTime);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
         testdata.put("ccCSV", ccCSV_text.getText());
         testdata.put("ccName", ccName_text.getText());
         testdata.put("ccNumber", ccNumber_text.getText());
@@ -742,14 +808,14 @@ public class TestParameters extends javax.swing.JFrame {
         testdata.put("email", emailAddress_text.getText());
         testdata.put("entrydate",entryDate_text.getText());
         testdata.put("exitdate",exitDate_text.getText());
-        testdata.put("entrytime",entryTime_text.getText());
-        testdata.put("exittime", exitTime_text.getText());
         testdata.put("ccyear",expireYear_text.getText());
         testdata.put("ccmonth",expireMonth_text.getText());
         testdata.put("firstname", firstName_text.getText());
         testdata.put("lastname", lastName_text.getText());
         testdata.put("zipcode", zipCode_text.getText());
         testdata.put("runscount", runsCount_spin.getValue().toString());
+        testdata.put("screenshotname", screenshotName_text.getText());
+        testdata.put("screenshotdir", screenshotDir);
         
         //testdata.setProperty("incdatevalue", incDate_check.isSelected());
         if (incDate_check.isSelected()){
@@ -865,6 +931,7 @@ public class TestParameters extends javax.swing.JFrame {
     private javax.swing.JMenuItem saveParms_menuItem;
     private javax.swing.JRadioButton visa_button;
     private javax.swing.JFormattedTextField zipCode_text;
-    private JTextField textField;
-    //[end] donotmodify
+    private JTextField password_text;
+    private JMenuItem ScreenshotLocation_menu;
+    private JTextField screenshotName_text;
 }

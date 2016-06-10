@@ -20,6 +20,11 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.Select;
 import org.apache.commons.io.*;
 
+/**
+ * 
+ * @author DavisT
+ *
+ */
 public class CheckLinks {
   private WebDriver driver;
   private String baseUrl;
@@ -37,8 +42,12 @@ public class CheckLinks {
   private String emailAddress;
   private String ccCSV;
   private String screenshotName = "screenshot";
+  private String screenshotDir;
   private Integer screenshotNumber = 0;
   private String browserName;
+  private Integer runCount;
+  
+  private Integer waitTimes = 200; // default timeout to allow pages to load
  
   /**
    * browser is sent from TestParameters
@@ -48,7 +57,8 @@ public class CheckLinks {
    * @param browser
    */
   public CheckLinks(Properties testdata,  String browser){
-      entrydate = testdata.getProperty("entrydate");
+      
+	  entrydate = testdata.getProperty("entrydate");
       exitdate = testdata.getProperty("exitdate");
       ccName = testdata.getProperty("ccName");
       ccNumber = testdata.getProperty("ccNumber");
@@ -57,17 +67,22 @@ public class CheckLinks {
       lastName = testdata.getProperty("lastname");
       emailAddress = testdata.getProperty("email");
       ccMonth = testdata.getProperty("ccmonth");
+      screenshotName = testdata.getProperty("screenshotname");
+      screenshotDir = testdata.getProperty("screenshotdir")+"\\";
+      
       if (browser == "Firefox"){
           driver = new FirefoxDriver();
-          browserName = "FF";
+          browserName = browser;
+          waitTimes = 20000; //Firefox needs longer to load to avoid blank screenshots
       } else if (browser == "Internet Explorer 11"){
     	  DesiredCapabilities ieCapabilities = DesiredCapabilities.internetExplorer(); 
     	  ieCapabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
     	  ieCapabilities.setCapability(InternetExplorerDriver.INITIAL_BROWSER_URL, "https://rdu-booking.preprod.inventiveit.net/en/");
           driver = new InternetExplorerDriver(ieCapabilities);
           browserName = browser;
+          waitTimes = 400; //allow a little longer for IE to load
           try {
-			Thread.sleep(400);
+			Thread.sleep(waitTimes);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -83,52 +98,57 @@ public class CheckLinks {
           driver = new EdgeDriver();
           browserName = browser;
       } else if (browser == "Opera"){
+    	  /*
+    	   * Not sure if this is needed
+    	   * 
+    	  URL url = this.getClass().getClassLoader().getResource("OperaDriver.exe");
+    	  System.setProperty("webdriver.opera.driver", url.getPath());
+          */
           driver = new OperaDriver();
           browserName = browser;
       }
     baseUrl = "https://rdu-booking.preprod.inventiveit.net/";
     driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-    driver.manage().timeouts().pageLoadTimeout(120, TimeUnit.SECONDS );
+    driver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS );
   }
 
   public void testCheckLinks() throws Exception {
 
     driver.get(baseUrl + "/en/");
-    Thread.sleep(20000);
+    Thread.sleep(2000);
 
     //special code to click the rdu logo
     WebElement rduLogo = driver.findElement(By.className("header-logo"));
     rduLogo.findElement(By.tagName("img")).click();
     // 
     //driver.findElement(By.cssSelector("a[href*=/en/")).click();
-    Thread.sleep(2000);
+    Thread.sleep(waitTimes);
     //String parentWindow = driver.getWindowHandle();
     File screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
     screenshotNumber += 1;
-    FileUtils.copyFile(screenshot, new File(screenshotName+screenshotNumber.toString()+".png"));
-    
+    FileUtils.copyFile(screenshot, new File(screenshotDir+screenshotName+screenshotNumber.toString()+".png"));
     driver.findElement(By.xpath("//nav[@class='header-bottom']//a[.='Parking Information']")).click();
-    Thread.sleep(200);
+    Thread.sleep(waitTimes);
     screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
     screenshotNumber += 1;
-    FileUtils.copyFile(screenshot, new File(screenshotName+screenshotNumber.toString()+".png"));
+    FileUtils.copyFile(screenshot, new File(screenshotDir+screenshotName+screenshotNumber.toString()+".png"));
     driver.findElement(By.xpath("//nav[@class='header-bottom']//a[.='Manage My Booking']")).click();
-    Thread.sleep(200);
+    Thread.sleep(waitTimes);
     screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
     screenshotNumber += 1;
-    FileUtils.copyFile(screenshot, new File(screenshotName+screenshotNumber.toString()+".png"));
+    FileUtils.copyFile(screenshot, new File(screenshotDir+screenshotName+screenshotNumber.toString()+".png"));
     driver.findElement(By.xpath("//nav[@class='header-bottom']//a[.='Login']")).click();
-    Thread.sleep(200);
+    Thread.sleep(waitTimes);
     screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
     screenshotNumber += 1;
-    FileUtils.copyFile(screenshot, new File(screenshotName+screenshotNumber.toString()+".png"));
+    FileUtils.copyFile(screenshot, new File(screenshotDir+screenshotName+screenshotNumber.toString()+".png"));
     driver.findElement(By.xpath("//nav[@class='header-bottom']//a[.='Create Account']")).click();
-    Thread.sleep(200);
+    Thread.sleep(waitTimes);
     screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
     screenshotNumber += 1;
-    FileUtils.copyFile(screenshot, new File(screenshotName+screenshotNumber.toString()+".png"));
+    FileUtils.copyFile(screenshot, new File(screenshotDir+screenshotName+screenshotNumber.toString()+".png"));
     driver.findElement(By.linkText("TERMS & CONDITIONS")).click();
-    Thread.sleep(200);
+    Thread.sleep(waitTimes);
     String parentWindow = driver.getWindowHandle();
     Set<String> handles = driver.getWindowHandles();
     	for (String windowHandle : handles){
@@ -136,28 +156,28 @@ public class CheckLinks {
     			driver.switchTo().window(windowHandle);
     			screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
     		    screenshotNumber += 1;
-    		    FileUtils.copyFile(screenshot, new File(screenshotName+screenshotNumber.toString()+".png"));
+    		    FileUtils.copyFile(screenshot, new File(screenshotDir+screenshotName+screenshotNumber.toString()+".png"));
     		    driver.findElement(By.linkText("PRIVACY POLICY")).click();
-    		    Thread.sleep(200);
+    		    Thread.sleep(waitTimes);
     		    //driver.switchTo().window("Privacy Policy | RDU International Airport");
     		    screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
     		    screenshotNumber += 1;
-    		    FileUtils.copyFile(screenshot, new File(screenshotName+screenshotNumber.toString()+".png"));
+    		    FileUtils.copyFile(screenshot, new File(screenshotDir+screenshotName+screenshotNumber.toString()+".png"));
     		    driver.findElement(By.linkText("CONTACT US")).click();
-    		    Thread.sleep(200);
+    		    Thread.sleep(waitTimes);
     		    //driver.switchTo().window("Contact us | RDU International Airport");
     		    screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
     		    screenshotNumber += 1;
-    		    FileUtils.copyFile(screenshot, new File(screenshotName+screenshotNumber.toString()+".png"));
+    		    FileUtils.copyFile(screenshot, new File(screenshotDir+screenshotName+screenshotNumber.toString()+".png"));
     		    driver.findElement(By.xpath("(//a[contains(text(),'Frequently Asked Questions')])[2]")).click();
-    		    Thread.sleep(200);
+    		    Thread.sleep(waitTimes);
     		    //driver.switchTo().window("Frequently Asked Questions | RDU International Airport");
     		    screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
     		    screenshotNumber += 1;
-    		    FileUtils.copyFile(screenshot, new File(screenshotName+screenshotNumber.toString()+".png"));
+    		    FileUtils.copyFile(screenshot, new File(screenshotDir+screenshotName+screenshotNumber.toString()+".png"));
     		}
     	}
-    // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | null | ]]
+    	driver.close();
   }
 
 
